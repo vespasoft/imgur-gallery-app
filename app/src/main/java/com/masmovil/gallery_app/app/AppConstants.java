@@ -1,4 +1,4 @@
-package com.masmovil.gallery_app;
+package com.masmovil.gallery_app.app;
 
 /**
  * Created by luisvespa on 06/09/18.

@@ -1,19 +1,16 @@
 package com.masmovil.gallery_app.view;
 
-import android.graphics.Color;
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
 
-import com.masmovil.gallery_app.AppConstants;
+import com.masmovil.gallery_app.app.AppConstants;
 import com.masmovil.gallery_app.R;
+import com.masmovil.gallery_app.app.UserPreferences;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -44,7 +41,6 @@ public class AuthenticationActivity extends AppCompatActivity {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 // intercept the tokens
-                // http://example.com#access_token=ACCESS_TOKEN&token_type=Bearer&expires_in=3600
                 boolean tokensURL = false;
                 if (url.startsWith(AppConstants.MY_IMGUR_REDIRECT_URL)) {
                     tokensURL = true;
@@ -62,12 +58,17 @@ public class AuthenticationActivity extends AppCompatActivity {
                     m.find();
                     long expiresIn = Long.valueOf(m.group(1));
 
-                    //ImgurAuthorization.getInstance().saveRefreshToken(refreshToken, accessToken, expiresIn);
+                    Log.i("refreshToken", refreshToken);
+                    Log.i("accessToken", accessToken);
+                    Log.i("expiresIn", ""+expiresIn);
+                    UserPreferences preferences = new UserPreferences(AuthenticationActivity.this);
+                    preferences.saveRefreshToken(refreshToken, accessToken, expiresIn);
 
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
                             Toast.makeText(AuthenticationActivity.this, R.string.logged_in, Toast.LENGTH_SHORT).show();
+                            startActivity(new Intent(getApplicationContext(), MainActivity.class));
                             finish();
                         }
                     });
