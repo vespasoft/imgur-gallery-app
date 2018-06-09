@@ -1,5 +1,6 @@
 package com.masmovil.gallery_app.view;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -11,24 +12,28 @@ import android.widget.Toast;
 import com.masmovil.gallery_app.app.AppConstants;
 import com.masmovil.gallery_app.R;
 import com.masmovil.gallery_app.app.UserPreferences;
+import com.masmovil.gallery_app.presenter.GalleryContracts;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class AuthenticationActivity extends AppCompatActivity {
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
+public class AuthenticationActivity extends AppCompatActivity implements GalleryContracts.View {
 
     private static final Pattern accessTokenPattern = Pattern.compile("access_token=([^&]*)");
     private static final Pattern refreshTokenPattern = Pattern.compile("refresh_token=([^&]*)");
     private static final Pattern expiresInPattern = Pattern.compile("expires_in=(\\d+)");
 
-    private WebView imgurWebView;
+    @BindView(R.id.loginWebView)
+    WebView imgurWebView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_authentication);
-
-        imgurWebView = (WebView) findViewById(R.id.loginWebView);
+        ButterKnife.bind(this);
 
         setupWebView();
 
@@ -78,4 +83,8 @@ public class AuthenticationActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    public Context context() {
+        return getApplicationContext();
+    }
 }

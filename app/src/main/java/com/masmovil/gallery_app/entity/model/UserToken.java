@@ -74,4 +74,15 @@ public class UserToken implements Serializable {
     public void setAccountUsername(String accountUsername) {
         this.accountUsername = accountUsername;
     }
+
+    @Override
+    public String toString() {
+        return "UserToken{" +
+                "accessToken='" + accessToken + '\'' +
+                ", refreshToken='" + refreshToken + '\'' +
+                ", expiresIn=" + expiresIn +
+                ", tokenType='" + tokenType + '\'' +
+                ", accountUsername='" + accountUsername + '\'' +
+                '}';
+    }
 }

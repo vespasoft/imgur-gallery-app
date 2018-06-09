@@ -3,6 +3,7 @@ package com.masmovil.gallery_app.app;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.text.TextUtils;
+import android.util.Log;
 
 public class UserPreferences {
 
@@ -29,6 +30,10 @@ public class UserPreferences {
     public boolean isLoggedIn() {
         return !TextUtils.isEmpty(preferences.getString("access_token", null));
 
+    }
+
+    public String getRefreshToken() {
+        return preferences.getString("refresh_token", null);
     }
 
     public void saveRefreshToken(String refreshToken, String accessToken, long expiresIn) {
