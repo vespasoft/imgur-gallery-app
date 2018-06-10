@@ -1,5 +1,6 @@
 package com.masmovil.gallery_app.entity.api.retrofit;
 
+import com.masmovil.gallery_app.entity.model.Data;
 import com.masmovil.gallery_app.entity.model.Gallery;
 import com.masmovil.gallery_app.entity.model.UserToken;
 
@@ -20,8 +21,8 @@ import retrofit2.http.POST;
 
 public interface UserRetrofitServices {
 
-    @GET("/3/gallery/")
-    Single<List<Gallery>> getGallery(@Header("Authorization") String clientId);
+    @GET("/3/account/me/images")
+    Single<Data> getGallery(@Header("Authorization") String accessToken);
 
     @FormUrlEncoded
     @POST("/oauth2/token")

@@ -1,11 +1,10 @@
 package com.masmovil.gallery_app.interactor;
 
 import com.masmovil.gallery_app.entity.api.client.UserService;
-import com.masmovil.gallery_app.entity.model.Gallery;
+import com.masmovil.gallery_app.entity.model.Data;
 import com.masmovil.gallery_app.entity.model.UserToken;
 import com.masmovil.gallery_app.presenter.GalleryContracts;
 
-import java.util.List;
 import java.util.Map;
 
 import io.reactivex.Single;
@@ -24,11 +23,11 @@ public class GalleryInteractor implements GalleryContracts.Interactor {
 
     public Single<UserToken> newAccessToken(Map<String, String> map) { return userService.newAccessToken(map); }
 
-    public Single<List<Gallery>> getGallery() { return userService.getGallery(); }
-
+    public Single<Data> getGallery(String accessToken) { return userService.getGallery(accessToken); }
 
     @Override
     public void unRegister() {
         userService = null;
     }
+
 }

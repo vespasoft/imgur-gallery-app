@@ -4,6 +4,7 @@ package com.masmovil.gallery_app.entity.api.client;
 import com.masmovil.gallery_app.app.AppConstants;
 import com.masmovil.gallery_app.entity.api.retrofit.ApiUtils;
 import com.masmovil.gallery_app.entity.api.retrofit.RetrofitClient;
+import com.masmovil.gallery_app.entity.model.Data;
 import com.masmovil.gallery_app.entity.model.Gallery;
 import com.masmovil.gallery_app.entity.model.UserToken;
 
@@ -22,8 +23,8 @@ import io.reactivex.schedulers.Schedulers;
 public class UserClient extends RetrofitClient implements UserService {
 
     @Override
-    public Single<List<Gallery>> getGallery() {
-        return ApiUtils.getAPIUserService().getGallery(AppConstants.HEADER_CLIENTID)
+    public Single<Data> getGallery(String accessToken) {
+        return ApiUtils.getAPIUserService().getGallery(accessToken)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }

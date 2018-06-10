@@ -36,6 +36,10 @@ public class UserPreferences {
         return preferences.getString("refresh_token", null);
     }
 
+    public String getAccessToken() {
+        return preferences.getString("access_token", null);
+    }
+
     public void saveRefreshToken(String refreshToken, String accessToken, long expiresIn) {
         editor.putString("access_token", accessToken);
         editor.putString("refresh_token", refreshToken);

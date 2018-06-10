@@ -19,6 +19,8 @@ public class GalleryContracts {
 
         void newAccessToken();
 
+        void getAllGallery();
+
         void goToLoginScreen();
     }
 

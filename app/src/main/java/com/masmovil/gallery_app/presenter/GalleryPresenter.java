@@ -7,14 +7,18 @@ import android.util.Log;
 
 import com.masmovil.gallery_app.app.AppConstants;
 import com.masmovil.gallery_app.app.UserPreferences;
+import com.masmovil.gallery_app.entity.model.Data;
+import com.masmovil.gallery_app.entity.model.Gallery;
 import com.masmovil.gallery_app.entity.model.UserToken;
 import com.masmovil.gallery_app.interactor.GalleryInteractor;
 import com.masmovil.gallery_app.router.GalleryRouter;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.internal.observers.ConsumerSingleObserver;
 import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
 
@@ -63,6 +67,8 @@ public class GalleryPresenter extends Presenter<GalleryContracts.View> implement
                     @Override
                     public void onSuccess(UserToken userToken) {
                         if (!TextUtils.isEmpty(userToken.getAccessToken())) {
+                            userPreferences.saveRefreshToken(userToken.getRefreshToken(), userToken.getAccessToken(), userToken.getExpiresIn());
+                            getAllGallery();
                             Log.i(TAG, "Got new access token "+ userToken.toString() );
                         }
                         else {
@@ -77,6 +83,36 @@ public class GalleryPresenter extends Presenter<GalleryContracts.View> implement
                 });
         }
 
+    }
+
+    @Override
+    public void getAllGallery() {
+        this.userPreferences = new UserPreferences(getView().context());
+        String accessToken = "Bearer " + userPreferences.getAccessToken();
+
+        if (accessToken!=null) {
+            interactor.getGallery(accessToken)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribeWith(new DisposableSingleObserver<Data>() {
+                        @Override
+                        public void onSuccess(Data galleries) {
+
+                            if (!galleries.getData().isEmpty()) {
+                                Log.i(TAG, "The user have images "+ galleries.getData().get(0).toString() );
+                            }
+                            else {
+                                Log.i(TAG, "Could not get images");
+                            }
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            Log.e(TAG, "onError: " + e.getMessage());
+                        }
+                    });
+
+        }
     }
 
     @Override
