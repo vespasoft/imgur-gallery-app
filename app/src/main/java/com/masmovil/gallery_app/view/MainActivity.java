@@ -26,11 +26,11 @@ import com.masmovil.gallery_app.presenter.GalleryPresenter;
 import com.masmovil.gallery_app.router.GalleryRouter;
 import com.masmovil.gallery_app.view.adapter.GalleryAdapter;
 import com.masmovil.gallery_app.view.listener.ClickListener;
+import com.masmovil.gallery_app.view.util.CommonUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 import android.support.v7.view.ActionMode;
-import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -44,6 +44,7 @@ public class MainActivity extends AppCompatActivity implements GalleryContracts.
     RecyclerView recyclerView;
     @BindView(R.id.fab)
     FloatingActionButton fab;
+    @BindView(R.id.contentLayout) View mView;
 
     private ActionModeCallback actionModeCallback;
     private ActionMode actionMode;
@@ -99,13 +100,18 @@ public class MainActivity extends AppCompatActivity implements GalleryContracts.
     }
 
     @Override
-    public void showUsersNotFoundMessage(boolean show) {
-
+    public void showErrorMessage(String message) {
+        CommonUtils.showSnackBar(this, mView, message);
     }
 
     @Override
-    public void showConnectionErrorMessage(boolean show) {
+    public void showNotFoundMessage() {
+        CommonUtils.showSnackBar(this, mView, "An error has occurred");
+    }
 
+    @Override
+    public void showConnectionErrorMessage() {
+        CommonUtils.showSnackBar(this, mView, "An connection error has occurred");
     }
 
     @Override
@@ -135,6 +141,16 @@ public class MainActivity extends AppCompatActivity implements GalleryContracts.
         }));
 
         mAdapter.notifyDataSetChanged();
+    }
+
+    public void deleteImageSelected(final ActionMode mode) {
+        try {
+            Gallery imageSelected = mAdapter.getSelectedItem();
+            galleryPresenter.deleteImage(imageSelected.getId(), mode);
+        } catch (Exception ex) {
+            Log.d(TAG, "Error to delete a user "+ ex.toString());
+        }
+
     }
 
     private void enableActionMode(int position) {

@@ -1,24 +1,21 @@
 package com.masmovil.gallery_app.presenter;
 
-import android.app.Activity;
-import android.content.Context;
 import android.text.TextUtils;
 import android.util.Log;
+import android.support.v7.view.ActionMode;
 
 import com.masmovil.gallery_app.app.AppConstants;
 import com.masmovil.gallery_app.app.UserPreferences;
 import com.masmovil.gallery_app.entity.model.Data;
-import com.masmovil.gallery_app.entity.model.Gallery;
 import com.masmovil.gallery_app.entity.model.UserToken;
 import com.masmovil.gallery_app.interactor.GalleryInteractor;
 import com.masmovil.gallery_app.router.GalleryRouter;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.internal.observers.ConsumerSingleObserver;
+import io.reactivex.observers.DisposableCompletableObserver;
 import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
 
@@ -83,6 +80,25 @@ public class GalleryPresenter extends Presenter<GalleryContracts.View> implement
                 });
         }
 
+    }
+
+    @Override
+    public void deleteImage(String imageHash, final ActionMode mode) {
+        interactor.deleteImage(imageHash)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeWith(new DisposableCompletableObserver() {
+                @Override
+                public void onComplete() {
+                    getAllGallery();
+                    mode.finish();
+                }
+
+                @Override
+                public void onError(Throwable e) {
+                    getView().showNotFoundMessage();
+                }
+            });
     }
 
     @Override

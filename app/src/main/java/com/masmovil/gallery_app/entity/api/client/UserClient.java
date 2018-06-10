@@ -30,6 +30,13 @@ public class UserClient extends RetrofitClient implements UserService {
     }
 
     @Override
+    public Completable deleteImage(String imageHash) {
+        return ApiUtils.getAPIUserService().deleteImage(imageHash)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    @Override
     public Single<UserToken> newAccessToken(Map<String, String> map) {
         return ApiUtils.getAPIUserService().newAccessToken(AppConstants.HEADER_CLIENTID, map)
                 .subscribeOn(Schedulers.io())

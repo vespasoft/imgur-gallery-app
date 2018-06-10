@@ -19,6 +19,8 @@ public interface UserService {
 
     Single<Data> getGallery(String accessToken);
 
+    Completable deleteImage(String imageHash);
+
     Single<UserToken> newAccessToken(@FieldMap Map<String, String> map);
 
     Completable upload(@FieldMap Map<String, String> map);

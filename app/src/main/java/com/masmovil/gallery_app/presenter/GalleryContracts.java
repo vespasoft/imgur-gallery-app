@@ -4,9 +4,7 @@ import android.support.v7.view.ActionMode;
 
 import com.masmovil.gallery_app.entity.model.Gallery;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by luisvespa on 06/08/18.
@@ -18,9 +16,11 @@ public class GalleryContracts {
 
         void showLoading(boolean show);
 
-        void showUsersNotFoundMessage(boolean show);
+        void showErrorMessage(String message);
 
-        void showConnectionErrorMessage(boolean show);
+        void showNotFoundMessage();
+
+        void showConnectionErrorMessage();
 
         void renderImages(List<Gallery> images);
     }
@@ -29,6 +29,8 @@ public class GalleryContracts {
         void onDestroy();
 
         void newAccessToken();
+
+        void deleteImage(String imageHash, final ActionMode mode);
 
         void getAllGallery();
 

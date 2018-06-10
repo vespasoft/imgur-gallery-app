@@ -7,6 +7,7 @@ import com.masmovil.gallery_app.presenter.GalleryContracts;
 
 import java.util.Map;
 
+import io.reactivex.Completable;
 import io.reactivex.Single;
 
 /**
@@ -24,6 +25,8 @@ public class GalleryInteractor implements GalleryContracts.Interactor {
     public Single<UserToken> newAccessToken(Map<String, String> map) { return userService.newAccessToken(map); }
 
     public Single<Data> getGallery(String accessToken) { return userService.getGallery(accessToken); }
+
+    public Completable deleteImage(String imageHash) { return userService.deleteImage(imageHash); }
 
     @Override
     public void unRegister() {
