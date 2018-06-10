@@ -100,6 +100,7 @@ public class GalleryPresenter extends Presenter<GalleryContracts.View> implement
 
                             if (!galleries.getData().isEmpty()) {
                                 Log.i(TAG, "The user have images "+ galleries.getData().get(0).toString() );
+                                getView().renderImages(galleries.getData());
                             }
                             else {
                                 Log.i(TAG, "Could not get images");

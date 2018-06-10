@@ -2,6 +2,9 @@ package com.masmovil.gallery_app.presenter;
 
 import android.support.v7.view.ActionMode;
 
+import com.masmovil.gallery_app.entity.model.Gallery;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -12,6 +15,14 @@ import java.util.Map;
 public class GalleryContracts {
 
     public interface View extends com.masmovil.gallery_app.presenter.Presenter.View {
+
+        void showLoading(boolean show);
+
+        void showUsersNotFoundMessage(boolean show);
+
+        void showConnectionErrorMessage(boolean show);
+
+        void renderImages(List<Gallery> images);
     }
 
     public interface Presenter  {

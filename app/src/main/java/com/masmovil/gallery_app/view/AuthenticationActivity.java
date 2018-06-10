@@ -20,7 +20,7 @@ import java.util.regex.Pattern;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class AuthenticationActivity extends AppCompatActivity implements GalleryContracts.View {
+public class AuthenticationActivity extends AppCompatActivity {
 
     private static final Pattern accessTokenPattern = Pattern.compile("access_token=([^&]*)");
     private static final Pattern refreshTokenPattern = Pattern.compile("refresh_token=([^&]*)");
@@ -83,8 +83,4 @@ public class AuthenticationActivity extends AppCompatActivity implements Gallery
         });
     }
 
-    @Override
-    public Context context() {
-        return getApplicationContext();
-    }
 }
