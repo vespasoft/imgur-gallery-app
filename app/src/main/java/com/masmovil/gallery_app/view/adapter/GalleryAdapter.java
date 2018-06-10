@@ -15,6 +15,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import com.masmovil.gallery_app.R;
 import com.masmovil.gallery_app.entity.model.Gallery;
+import com.masmovil.gallery_app.view.listener.ClickListener;
 
 import java.util.List;
 
@@ -29,6 +30,7 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.MyViewHo
 
     private List<Gallery> images;
     private Context mContext;
+    private static int currentSelectedIndex = -1;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         ImageView thumbnail;
@@ -42,6 +44,14 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.MyViewHo
     public GalleryAdapter(Context context, List<Gallery> images) {
         mContext = context;
         this.images = images;
+    }
+
+    public Gallery getSelectedItem() {
+        return images.get(currentSelectedIndex);
+    }
+
+    public void setSelectedItem(int selectedItem) {
+        this.currentSelectedIndex = selectedItem;
     }
 
     @Override
@@ -68,18 +78,12 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.MyViewHo
         return images.size();
     }
 
-    public interface ClickListener {
-        void onClick(View view, int position);
-
-        void onLongClick(View view, int position);
-    }
-
     public static class RecyclerTouchListener implements RecyclerView.OnItemTouchListener {
 
         private GestureDetector gestureDetector;
-        private GalleryAdapter.ClickListener clickListener;
+        private ClickListener clickListener;
 
-        public RecyclerTouchListener(Context context, final RecyclerView recyclerView, final GalleryAdapter.ClickListener clickListener) {
+        public RecyclerTouchListener(Context context, final RecyclerView recyclerView, final ClickListener clickListener) {
             this.clickListener = clickListener;
             gestureDetector = new GestureDetector(context, new GestureDetector.SimpleOnGestureListener() {
                 @Override

@@ -11,6 +11,9 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.masmovil.gallery_app.R;
@@ -22,15 +25,18 @@ import com.masmovil.gallery_app.presenter.GalleryContracts;
 import com.masmovil.gallery_app.presenter.GalleryPresenter;
 import com.masmovil.gallery_app.router.GalleryRouter;
 import com.masmovil.gallery_app.view.adapter.GalleryAdapter;
+import com.masmovil.gallery_app.view.listener.ClickListener;
 
 import java.util.ArrayList;
 import java.util.List;
+import android.support.v7.view.ActionMode;
 import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity implements GalleryContracts.View {
+    private static String TAG = MainActivity.class.getSimpleName();
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -39,6 +45,8 @@ public class MainActivity extends AppCompatActivity implements GalleryContracts.
     @BindView(R.id.fab)
     FloatingActionButton fab;
 
+    private ActionModeCallback actionModeCallback;
+    private ActionMode actionMode;
     private List<Gallery> images = new ArrayList<>();
     private ProgressDialog pDialog;
     private GalleryAdapter mAdapter;
@@ -54,6 +62,7 @@ public class MainActivity extends AppCompatActivity implements GalleryContracts.
 
         galleryPresenter = new GalleryPresenter(new GalleryInteractor(new UserClient()), new GalleryRouter(this));
         galleryPresenter.setView(this);
+        actionModeCallback = new ActionModeCallback();
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -69,23 +78,14 @@ public class MainActivity extends AppCompatActivity implements GalleryContracts.
             finish();
         }
 
-        this.configureRecyclerView();
+        galleryPresenter.getAllGallery();
 
-    }
-
-    private void configureRecyclerView() {
-        mAdapter = new GalleryAdapter(getApplicationContext(), images);
-
-        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getApplicationContext(), 2);
-        recyclerView.setLayoutManager(mLayoutManager);
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(mAdapter);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        galleryPresenter.newAccessToken();
+        //galleryPresenter.newAccessToken();
     }
 
     @Override
@@ -117,6 +117,90 @@ public class MainActivity extends AppCompatActivity implements GalleryContracts.
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(mAdapter);
+        recyclerView.addOnItemTouchListener(new GalleryAdapter.RecyclerTouchListener(this, recyclerView, new ClickListener() {
+            @Override
+            public void onClick(View view, int position) {
+                Log.i("MainAcitivty", "has been clicked the image "+position );
+                enableActionMode(position);
+            }
+
+            @Override
+            public void onLongClick(View view, int position) {
+                try {
+                    enableActionMode(position);
+                } catch (Exception ex){
+                    Log.e(TAG, "error in onLongClick. " + ex.toString());
+                }
+            }
+        }));
+
         mAdapter.notifyDataSetChanged();
+    }
+
+    private void enableActionMode(int position) {
+        if (actionMode == null) {
+            actionMode = startSupportActionMode(actionModeCallback);
+        }
+        toggleSelection(position);
+    }
+
+
+    private void toggleSelection(int position) {
+        mAdapter.setSelectedItem(position);
+        mAdapter.notifyDataSetChanged();
+
+        if (position < 0) {
+            actionMode.finish();
+        } else {
+            //mActivity.showToolbar(false);
+            actionMode.setTitle(String.valueOf(position));
+            actionMode.invalidate();
+        }
+    }
+
+
+    private class ActionModeCallback implements ActionMode.Callback {
+        @Override
+        public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+            mode.getMenuInflater().inflate(R.menu.menu_action_mode, menu);
+
+            return true;
+        }
+
+        @Override
+        public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+            return false;
+        }
+
+        @Override
+        public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+            switch (item.getItemId()) {
+
+                case R.id.action_view:
+                    Log.i("MainActivity", "action view has been clicked");
+                    return true;
+
+                case R.id.action_delete:
+                    Log.i("MainActivity", "action delete has been clicked");
+                    return true;
+
+                default:
+                    mode.finish();
+                    return true;
+            }
+        }
+
+        @Override
+        public void onDestroyActionMode(ActionMode mode) {
+            mAdapter.setSelectedItem(-1);
+            actionMode = null;
+            //mActivity.showToolbar(true);
+            recyclerView.post(new Runnable() {
+                @Override
+                public void run() {
+                    //galleryPresenter.getAllGallery();
+                }
+            });
+        }
     }
 }

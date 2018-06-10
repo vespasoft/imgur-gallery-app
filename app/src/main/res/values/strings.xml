@@ -4,6 +4,9 @@
     <string name="logged_in">Logged in.</string>
     <string name="logged_out">Logged out.</string>
 
+    <string name="action_view">view</string>
+    <string name="action_delete">delete</string>
+
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password (optional)</string>
