@@ -4,11 +4,13 @@ import com.masmovil.gallery_app.entity.model.Data;
 import com.masmovil.gallery_app.entity.model.Gallery;
 import com.masmovil.gallery_app.entity.model.UserToken;
 
+import java.io.File;
 import java.util.List;
 import java.util.Map;
 
 import io.reactivex.Completable;
 import io.reactivex.Single;
+import okhttp3.RequestBody;
 import retrofit2.http.FieldMap;
 
 /**
@@ -23,6 +25,6 @@ public interface UserService {
 
     Single<UserToken> newAccessToken(@FieldMap Map<String, String> map);
 
-    Completable upload(@FieldMap Map<String, String> map);
+    Single<Gallery> upload(String title, String description, String albumId, String username, File file);
 
 }

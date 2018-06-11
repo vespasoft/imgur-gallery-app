@@ -3,40 +3,36 @@ package com.masmovil.gallery_app.presenter;
 import android.support.v7.view.ActionMode;
 
 import com.masmovil.gallery_app.entity.model.Gallery;
+import com.masmovil.gallery_app.entity.model.Upload;
 
 import java.util.List;
+
+import okhttp3.RequestBody;
 
 /**
  * Created by luisvespa on 06/08/18.
  */
 
-public class GalleryContracts {
+public class UploadContracts {
 
     public interface View extends com.masmovil.gallery_app.presenter.Presenter.View {
 
         void showLoading(boolean show);
 
-        void showErrorMessage(String message);
+        void createFailedUploadNotification();
 
-        void showNotFoundMessage();
+        void createUploadedNotification(Gallery gallery);
 
         void showConnectionErrorMessage();
 
-        void renderImages(List<Gallery> images);
     }
 
     public interface Presenter  {
         void onDestroy();
 
-        void newAccessToken();
+        void uploadImage(Upload uploadFile);
 
-        void deleteImage(String imageHash, final ActionMode mode);
-
-        void getAllGallery();
-
-        void loggedOut();
-
-        void goToUploadScreen();
+        void goToGalleryScreen();
     }
 
     public interface Interactor {
@@ -46,9 +42,7 @@ public class GalleryContracts {
     public interface Router {
         void unRegister();
 
-        void presentLoginScreen();
-
-        void presentUploadScreen();
+        void presentGalleryScreen();
 
     }
 }

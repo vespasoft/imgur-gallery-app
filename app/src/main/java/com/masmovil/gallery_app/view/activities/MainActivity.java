@@ -87,7 +87,38 @@ public class MainActivity extends AppCompatActivity implements GalleryContracts.
     @Override
     protected void onResume() {
         super.onResume();
-        //galleryPresenter.newAccessToken();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        toolbar.inflateMenu(R.menu.main);
+
+        toolbar.setOnMenuItemClickListener(
+                new Toolbar.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        return onOptionsItemSelected(item);
+                    }
+                });
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.action_logged_out:
+                loggedOut();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    public void loggedOut() {
+        galleryPresenter.loggedOut();
     }
 
     @Override

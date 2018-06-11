@@ -97,6 +97,7 @@ public class GalleryPresenter extends Presenter<GalleryContracts.View> implement
                 @Override
                 public void onError(Throwable e) {
                     getView().showNotFoundMessage();
+                    Log.e(TAG, e.getMessage());
                 }
             });
     }
@@ -133,7 +134,8 @@ public class GalleryPresenter extends Presenter<GalleryContracts.View> implement
     }
 
     @Override
-    public void goToLoginScreen() {
+    public void loggedOut() {
+        userPreferences.logout();
         router.presentLoginScreen();
     }
 

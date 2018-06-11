@@ -29,11 +29,11 @@
             android:adjustViewBounds="true"
             android:maxHeight="250dp"
             android:minHeight="250dp"
-            android:scaleType="center"
+            android:scaleType="fitCenter"
             android:src="@drawable/ic_camera_alt_black_24dp" />
 
         <android.support.design.widget.TextInputLayout
-            android:id="@+id/til_title"
+            android:id="@+id/titleWrapper"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/imageview"
@@ -41,23 +41,23 @@
 
             <EditText
                 android:id="@+id/editTextTitle"
-                android:hint="@string/prompt_title"
                 android:inputType="text"
+                android:hint="@string/prompt_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
-            android:id="@+id/til_desc"
+            android:id="@+id/descriptionWrapper"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/til_title">
+            android:layout_below="@id/titleWrapper">
 
             <EditText
                 android:id="@+id/editTextDescription"
-                android:hint="@string/prompt_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:hint="@string/prompt_description"
                 android:inputType="text" />
         </android.support.design.widget.TextInputLayout>
 

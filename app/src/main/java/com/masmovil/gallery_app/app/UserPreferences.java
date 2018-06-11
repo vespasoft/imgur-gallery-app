@@ -5,6 +5,8 @@ import android.content.SharedPreferences;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.masmovil.gallery_app.entity.model.UserToken;
+
 public class UserPreferences {
 
     private static final String TAG = UserPreferences.class.getSimpleName();
@@ -29,7 +31,6 @@ public class UserPreferences {
 
     public boolean isLoggedIn() {
         return !TextUtils.isEmpty(preferences.getString("access_token", null));
-
     }
 
     public String getRefreshToken() {
@@ -40,6 +41,10 @@ public class UserPreferences {
         return preferences.getString("access_token", null);
     }
 
+    public String getUsername() {
+        return preferences.getString("account_username", null);
+    }
+
     public void saveRefreshToken(String refreshToken, String accessToken, long expiresIn) {
         editor.putString("access_token", accessToken);
         editor.putString("refresh_token", refreshToken);
@@ -47,12 +52,18 @@ public class UserPreferences {
         editor.commit();
     }
 
+    public void saveUserToken(UserToken userToken) {
+        editor.putString("access_token", userToken.getAccessToken());
+        editor.putString("refresh_token", userToken.getRefreshToken());
+        editor.putLong("expires_in", userToken.getExpiresIn());
+        editor.putString("account_username", userToken.getAccountUsername());
+        editor.putString("token_type", userToken.getTokenType());
+        editor.commit();
+    }
+
     public void logout() {
-        Context context = Application.getAppContext();
-        context.getSharedPreferences(SHARED_PREFERENCES_NAME, 0)
-                .edit()
-                .clear()
-                .apply();
+        editor.clear();
+        editor.apply();
     }
 
 }
