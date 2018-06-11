@@ -146,7 +146,7 @@ public class MainActivity extends AppCompatActivity implements GalleryContracts.
     public void deleteImageSelected(final ActionMode mode) {
         try {
             Gallery imageSelected = mAdapter.getSelectedItem();
-            galleryPresenter.deleteImage(imageSelected.getId(), mode);
+            galleryPresenter.deleteImage(imageSelected.getDeletehash(), mode);
         } catch (Exception ex) {
             Log.d(TAG, "Error to delete a user "+ ex.toString());
         }
@@ -198,6 +198,7 @@ public class MainActivity extends AppCompatActivity implements GalleryContracts.
 
                 case R.id.action_delete:
                     Log.i("MainActivity", "action delete has been clicked");
+                    deleteImageSelected(mode);
                     return true;
 
                 default:

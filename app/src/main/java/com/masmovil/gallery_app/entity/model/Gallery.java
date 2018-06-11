@@ -43,6 +43,9 @@ public class Gallery implements Serializable {
     @SerializedName("name")
     @Expose
     private String name;
+    @SerializedName("deletehash")
+    @Expose
+    private String deletehash;
     @SerializedName("link")
     @Expose
     private String link;
@@ -146,6 +149,14 @@ public class Gallery implements Serializable {
         this.link = link;
     }
 
+    public String getDeletehash() {
+        return deletehash;
+    }
+
+    public void setDeletehash(String deletehash) {
+        this.deletehash = deletehash;
+    }
+
     @Override
     public String toString() {
         return "Gallery{" +
@@ -160,6 +171,7 @@ public class Gallery implements Serializable {
                 ", views=" + views +
                 ", favorite=" + favorite +
                 ", name='" + name + '\'' +
+                ", deletehash='" + deletehash + '\'' +
                 ", link='" + link + '\'' +
                 '}';
     }
