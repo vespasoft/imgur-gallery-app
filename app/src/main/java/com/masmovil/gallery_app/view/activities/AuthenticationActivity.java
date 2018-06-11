@@ -1,6 +1,5 @@
-package com.masmovil.gallery_app.view;
+package com.masmovil.gallery_app.view.activities;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -12,7 +11,6 @@ import android.widget.Toast;
 import com.masmovil.gallery_app.app.AppConstants;
 import com.masmovil.gallery_app.R;
 import com.masmovil.gallery_app.app.UserPreferences;
-import com.masmovil.gallery_app.presenter.GalleryContracts;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

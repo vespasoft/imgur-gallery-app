@@ -35,6 +35,8 @@ public class GalleryContracts {
         void getAllGallery();
 
         void goToLoginScreen();
+
+        void goToUploadScreen();
     }
 
     public interface Interactor {
@@ -45,6 +47,8 @@ public class GalleryContracts {
         void unRegister();
 
         void presentLoginScreen();
+
+        void presentUploadScreen();
 
     }
 }

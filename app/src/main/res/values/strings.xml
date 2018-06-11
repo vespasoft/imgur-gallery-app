@@ -7,6 +7,9 @@
     <string name="action_view">view</string>
     <string name="action_delete">delete</string>
 
+    <string name="prompt_title">title</string>
+    <string name="prompt_description">description</string>
+
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password (optional)</string>
@@ -21,4 +24,5 @@
     </string>
     <string name="title_activity_authentication">AuthenticationActivity</string>
     <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_upload">UploadActivity</string>
 </resources>

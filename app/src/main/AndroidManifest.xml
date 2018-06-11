@@ -19,7 +19,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".view.MainActivity"
+            android:name=".view.activities.MainActivity"
             android:label="@string/title_activity_main"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -29,10 +29,13 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".view.AuthenticationActivity"
+            android:name=".view.activities.AuthenticationActivity"
             android:label="@string/title_activity_authentication"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".view.activities.UploadActivity"
+            android:label="@string/title_activity_upload"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

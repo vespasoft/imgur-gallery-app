@@ -1,4 +1,4 @@
-package com.masmovil.gallery_app.view;
+package com.masmovil.gallery_app.view.activities;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -70,6 +70,7 @@ public class MainActivity extends AppCompatActivity implements GalleryContracts.
             public void onClick(View view) {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
+                galleryPresenter.goToUploadScreen();
             }
         });
 

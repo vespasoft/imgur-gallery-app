@@ -3,10 +3,9 @@ package com.masmovil.gallery_app.router;
 import android.app.Activity;
 import android.content.Intent;
 
-import com.masmovil.gallery_app.entity.api.client.UserClient;
-import com.masmovil.gallery_app.interactor.GalleryInteractor;
 import com.masmovil.gallery_app.presenter.GalleryContracts;
-import com.masmovil.gallery_app.view.MainActivity;
+import com.masmovil.gallery_app.view.activities.MainActivity;
+import com.masmovil.gallery_app.view.activities.UploadActivity;
 
 /**
  * Created by luisvespa on 06/09/18.
@@ -31,4 +30,9 @@ public class GalleryRouter implements GalleryContracts.Router {
         activity.startActivity(intent);
     }
 
+    @Override
+    public void presentUploadScreen() {
+        Intent intent = new Intent(activity, UploadActivity.class);
+        activity.startActivity(intent);
+    }
 }

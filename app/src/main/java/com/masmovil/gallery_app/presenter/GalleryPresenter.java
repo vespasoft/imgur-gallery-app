@@ -137,4 +137,9 @@ public class GalleryPresenter extends Presenter<GalleryContracts.View> implement
         router.presentLoginScreen();
     }
 
+    @Override
+    public void goToUploadScreen() {
+        router.presentUploadScreen();
+    }
+
 }
