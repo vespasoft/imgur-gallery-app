@@ -41,21 +41,23 @@ public class UploadPresenter extends Presenter<UploadContracts.View> implements 
 
     @Override
     public void uploadImage(Upload uploadFile) {
+        getView().showLoading(true);
         this.userPreferences = new UserPreferences(getView().context());
         String accessToken = "Bearer " + userPreferences.getAccessToken();
-
         interactor.upload(accessToken, uploadFile.title, uploadFile.description, uploadFile.image)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(new DisposableCompletableObserver() {
                     @Override
                     public void onComplete() {
+                        getView().showLoading(false);
                         getView().createUploadedNotification();
                         goToGalleryScreen();
                     }
 
                     @Override
                     public void onError(Throwable e) {
+                        getView().showLoading(false);
                         getView().createFailedUploadNotification();
                         Log.e("UploadPresenter", e.toString());
                     }

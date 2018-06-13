@@ -1,5 +1,7 @@
 package com.masmovil.gallery_app.view.activities;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.ContentResolver;
@@ -22,6 +24,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -72,6 +75,8 @@ public class UploadActivity extends AppCompatActivity implements UploadContracts
     FloatingActionButton fab;
     @BindView(R.id.contentLayout)
     View mView;
+    @BindView(R.id.progressBar)
+    ProgressBar mProgressView;
 
     private Upload upload; // Upload object containging image and meta data
     private File chosenFile; //chosen file from intent
@@ -186,10 +191,31 @@ public class UploadActivity extends AppCompatActivity implements UploadContracts
         upload.description = editTextDescription.getText().toString();
     }
 
-
+    /**
+     * Shows the progress UI and hides the login form.
+     */
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
     @Override
-    public void showLoading(boolean show) {
+    public void showLoading(final boolean show) {
+        // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
+        // for very easy animations. If available, use these APIs to fade-in
+        // the progress spinner.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
+            int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
 
+            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+            mProgressView.animate().setDuration(shortAnimTime).alpha(
+                    show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+                }
+            });
+        } else {
+            // The ViewPropertyAnimator APIs are not available, so simply show
+            // and hide the relevant UI components.
+            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+        }
     }
 
     @Override
