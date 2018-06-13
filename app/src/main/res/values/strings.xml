@@ -22,6 +22,8 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
+    <string name="message_error_upload_image">"An error occurred while trying to upload the image."</string>
+    <string name="message_success_upload_image">"the photo has been uploaded."</string>
     <string name="title_activity_authentication">AuthenticationActivity</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="title_activity_upload">UploadActivity</string>

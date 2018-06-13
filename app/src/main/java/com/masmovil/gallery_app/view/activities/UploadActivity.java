@@ -194,12 +194,12 @@ public class UploadActivity extends AppCompatActivity implements UploadContracts
 
     @Override
     public void createFailedUploadNotification() {
-        Log.i(TAG, "filed uploaded notification");
+        CommonUtils.showSnackBar(this, mView, getString(R.string.message_error_upload_image));
     }
 
     @Override
     public void createUploadedNotification() {
-        CommonUtils.showSnackBar(this, mView, "the photo has been uploaded");
+        CommonUtils.showSnackBar(this, mView, getString(R.string.message_success_upload_image));
         finish();
     }
 
