@@ -34,6 +34,7 @@ import android.support.v7.view.ActionMode;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class MainActivity extends AppCompatActivity implements GalleryContracts.View {
     private static String TAG = MainActivity.class.getSimpleName();
@@ -65,15 +66,6 @@ public class MainActivity extends AppCompatActivity implements GalleryContracts.
         galleryPresenter.setView(this);
         actionModeCallback = new ActionModeCallback();
 
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-                galleryPresenter.goToUploadScreen();
-            }
-        });
-
         UserPreferences preferences = new UserPreferences(this);
         if (!preferences.isLoggedIn()) {
             startActivity(new Intent(getApplicationContext(), AuthenticationActivity.class));
@@ -82,6 +74,11 @@ public class MainActivity extends AppCompatActivity implements GalleryContracts.
 
         galleryPresenter.getAllGallery();
 
+    }
+
+    @OnClick(R.id.fab)
+    public void openCamera() {
+        galleryPresenter.goToUploadScreen();
     }
 
     @Override
