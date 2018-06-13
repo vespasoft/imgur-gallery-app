@@ -25,6 +25,6 @@ public interface UserService {
 
     Single<UserToken> newAccessToken(@FieldMap Map<String, String> map);
 
-    Single<Gallery> upload(String title, String description, String albumId, String username, File file);
+    Completable upload(String accessToken, String title, String description, File file);
 
 }

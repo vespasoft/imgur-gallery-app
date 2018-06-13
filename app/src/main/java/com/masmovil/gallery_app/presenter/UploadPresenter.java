@@ -1,6 +1,7 @@
 package com.masmovil.gallery_app.presenter;
 
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.masmovil.gallery_app.app.UserPreferences;
 import com.masmovil.gallery_app.entity.model.Gallery;
@@ -12,6 +13,7 @@ import io.reactivex.SingleObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.internal.observers.ConsumerSingleObserver;
+import io.reactivex.observers.DisposableCompletableObserver;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.RequestBody;
 
@@ -40,37 +42,22 @@ public class UploadPresenter extends Presenter<UploadContracts.View> implements 
     @Override
     public void uploadImage(Upload uploadFile) {
         this.userPreferences = new UserPreferences(getView().context());
-        String username = userPreferences.getUsername();
+        String accessToken = "Bearer " + userPreferences.getAccessToken();
 
-        interactor.upload(uploadFile.title, uploadFile.description, uploadFile.albumId, username, uploadFile.image)
+        interactor.upload(accessToken, uploadFile.title, uploadFile.description, uploadFile.image)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(new SingleObserver<Gallery>() {
+                .subscribeWith(new DisposableCompletableObserver() {
                     @Override
-                    public void onSubscribe(Disposable d) {
-
-                    }
-
-                    @Override
-                    public void onSuccess(Gallery gallery) {
-                        if (gallery == null) {
-                            /*
-                             Notify image was NOT uploaded successfully
-                            */
-                            getView().createFailedUploadNotification();
-                            return;
-                        }
-                        /*
-                        Notify image was uploaded successfully
-                        */
-                        if (!TextUtils.isEmpty(gallery.getId())) {
-                            getView().createUploadedNotification(gallery);
-                        }
+                    public void onComplete() {
+                        getView().createUploadedNotification();
+                        goToGalleryScreen();
                     }
 
                     @Override
                     public void onError(Throwable e) {
                         getView().createFailedUploadNotification();
+                        Log.e("UploadPresenter", e.toString());
                     }
                 });
     }

@@ -25,8 +25,8 @@ public class UploadInteractor implements UploadContracts.Interactor {
         this.userService = userService;
     }
 
-    public Single<Gallery> upload(String title, String description, String albumId, String username, File file) {
-        return userService.upload(title, description, albumId, username, file);
+    public Completable upload(String accessToken, String title, String description, File file) {
+        return userService.upload(accessToken, title, description, file);
     }
 
     @Override

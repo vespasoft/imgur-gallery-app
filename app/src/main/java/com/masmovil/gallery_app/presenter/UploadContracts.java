@@ -21,7 +21,7 @@ public class UploadContracts {
 
         void createFailedUploadNotification();
 
-        void createUploadedNotification(Gallery gallery);
+        void createUploadedNotification();
 
         void showConnectionErrorMessage();
 

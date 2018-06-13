@@ -9,6 +9,7 @@ import com.masmovil.gallery_app.entity.model.Gallery;
 import com.masmovil.gallery_app.entity.model.UserToken;
 
 import java.io.File;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -17,7 +18,6 @@ import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.MediaType;
-import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 
 /**
@@ -48,11 +48,21 @@ public class UserClient extends RetrofitClient implements UserService {
     }
 
     @Override
-    public Single<Gallery> upload(String title, String description, String albumId, String username, File file) {
-        MultipartBody.Part filePart = MultipartBody.Part.createFormData("file", file.getName(), RequestBody.create(MediaType.parse("image/*"), file));
+    public Completable upload(String accessToken, String title, String description, File file) {
         RequestBody fileBody = RequestBody.create(MediaType.parse("image/*"), file);
-        return ApiUtils.getAPIUserService().upload(AppConstants.HEADER_CLIENTID, title, description, albumId, username, fileBody)
+
+        Map<String, RequestBody> parameters = new HashMap<>();
+        parameters.put("title", toRequestBody(title));
+        parameters.put("description", toRequestBody(description));
+        parameters.put("image", fileBody);
+
+        return ApiUtils.getAPIUserService().upload(accessToken, parameters)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    private RequestBody toRequestBody (String value) {
+        RequestBody body = RequestBody.create(MediaType.parse("text/plain"), value);
+        return body ;
     }
 }

@@ -1,5 +1,6 @@
 package com.masmovil.gallery_app.view.activities;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -8,6 +9,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.design.widget.FloatingActionButton;
@@ -16,6 +18,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.MenuItem;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -66,6 +70,8 @@ public class UploadActivity extends AppCompatActivity implements UploadContracts
     Toolbar toolbar;
     @BindView(R.id.fab)
     FloatingActionButton fab;
+    @BindView(R.id.contentLayout)
+    View mView;
 
     private Upload upload; // Upload object containging image and meta data
     private File chosenFile; //chosen file from intent
@@ -77,9 +83,30 @@ public class UploadActivity extends AppCompatActivity implements UploadContracts
         setContentView(R.layout.activity_upload);
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(getResources().getDrawable(R.drawable.ic_arrow_back_24dp));
+
 
         uploadPresenter = new UploadPresenter(new UploadInteractor(new UserClient()), new UploadRouter(this));
         uploadPresenter.setView(this);
+
+        if (shouldAskPermissions()) {
+            askPermissions();
+        }
+    }
+
+    protected boolean shouldAskPermissions() {
+        return (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP_MR1);
+    }
+
+    @TargetApi(23)
+    protected void askPermissions() {
+        String[] permissions = {
+                "android.permission.READ_EXTERNAL_STORAGE",
+                "android.permission.WRITE_EXTERNAL_STORAGE"
+        };
+        int requestCode = 200;
+        requestPermissions(permissions, requestCode);
     }
 
     @Override
@@ -171,14 +198,24 @@ public class UploadActivity extends AppCompatActivity implements UploadContracts
     }
 
     @Override
-    public void createUploadedNotification(Gallery gallery) {
-        Log.i(TAG, "create uploaded notification " + gallery.toString());
+    public void createUploadedNotification() {
+        CommonUtils.showSnackBar(this, mView, "the photo has been uploaded");
         finish();
     }
 
     @Override
     public void showConnectionErrorMessage() {
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                uploadPresenter.goToGalleryScreen();
+                return true;
+        }
+        return (super.onOptionsItemSelected(item));
     }
 
     @Override
