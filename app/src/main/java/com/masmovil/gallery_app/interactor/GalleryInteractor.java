@@ -26,7 +26,7 @@ public class GalleryInteractor implements GalleryContracts.Interactor {
 
     public Single<Data> getGallery(String accessToken) { return userService.getGallery(accessToken); }
 
-    public Completable deleteImage(String imageHash) { return userService.deleteImage(imageHash); }
+    public Completable deleteImage(String accessToken, String imageHash) { return userService.deleteImage(accessToken, imageHash); }
 
     @Override
     public void unRegister() {

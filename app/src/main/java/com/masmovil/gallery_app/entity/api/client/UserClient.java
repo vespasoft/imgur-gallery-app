@@ -34,8 +34,8 @@ public class UserClient extends RetrofitClient implements UserService {
     }
 
     @Override
-    public Completable deleteImage(String imageHash) {
-        return ApiUtils.getAPIUserService().deleteImage(imageHash)
+    public Completable deleteImage(String accessToken, String imageHash) {
+        return ApiUtils.getAPIUserService().deleteImage(accessToken, imageHash)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }

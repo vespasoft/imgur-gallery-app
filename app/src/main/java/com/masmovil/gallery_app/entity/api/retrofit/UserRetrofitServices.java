@@ -33,7 +33,7 @@ public interface UserRetrofitServices {
     Single<Data> getGallery(@Header("Authorization") String accessToken);
 
     @DELETE("https://api.imgur.com/3/image/{imageHash}")
-    Completable deleteImage(@Path("imageHash") String imageHash);
+    Completable deleteImage(@Header("Authorization") String accessToken, @Path("imageHash") String imageHash);
 
     @FormUrlEncoded
     @POST("/oauth2/token")

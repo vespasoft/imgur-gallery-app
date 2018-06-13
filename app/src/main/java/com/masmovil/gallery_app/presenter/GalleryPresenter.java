@@ -46,7 +46,6 @@ public class GalleryPresenter extends Presenter<GalleryContracts.View> implement
 
     @Override
     public void newAccessToken() {
-
         this.userPreferences = new UserPreferences(getView().context());
         String refreshToken = userPreferences.getRefreshToken();
 
@@ -84,7 +83,10 @@ public class GalleryPresenter extends Presenter<GalleryContracts.View> implement
 
     @Override
     public void deleteImage(String imageHash, final ActionMode mode) {
-        interactor.deleteImage(imageHash)
+        this.userPreferences = new UserPreferences(getView().context());
+        String accessToken = "Bearer " + userPreferences.getAccessToken();
+
+        interactor.deleteImage(accessToken, imageHash)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeWith(new DisposableCompletableObserver() {
